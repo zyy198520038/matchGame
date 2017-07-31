@@ -52,18 +52,23 @@ MatchGame.renderCards = function(cardValues, $game) {
   for(var i=0;i<cardValues.length;i++){
       var value=cardValues[i];
       var color=cardColor[value-1];
+      var indexNum=i;
       var data={
         value:value,
         color:color,
-        fliped:false
+        fliped:false,
+        disable:false,
+        indexNum:indexNum
       }
       var $gameCard = $('<div class="col-xs-3 card"></div>');
       $gameCard.data(data);
-      console.log($gameCard.data("value"));
+      //console.log($gameCard.data("value"));
       $game.append($gameCard);
     }
     $('.card').click(function() {
+      if($(this).data("disable")==false){
     MatchGame.flipCard($(this), $('#game'));
+  }
   });
   }
 
@@ -79,13 +84,21 @@ var flippedCards=  $game.data('flippedCards');
     $card.text($card.data("value"));
     $card.css('background-color', $card.data("color"));
     flippedCards.push($card);
-    console.log("normal"+flippedCards[0].css('background-color'));
+    //console.log("normal"+flippedCards[0].css('background-color'));
     if(flippedCards.length===2){
-    if(flippedCards[0].data('value')===flippedCards[1].data('value')){
+      console.log("index0= "+flippedCards[0].data('indexNum'));
+      console.log("index1= "+flippedCards[1].data('indexNum'));
+      console.log("value0= "+flippedCards[0].data('value'));
+      console.log("value1= "+flippedCards[1].data('value'));
+    if(flippedCards[0].data('value')==flippedCards[1].data('value')&&flippedCards[0].data('indexNum')!=flippedCards[1].data('indexNum')){
+      console.log("i am here")
       flippedCards[0].css('background-color', 'rgb(153,153,153)');
       flippedCards[1].css('background-color', 'rgb(153,153,153)');
       flippedCards[0].css('color', 'rgb(204,204,204)');
       flippedCards[1].css('color', 'rgb(204,204,204)');
+      flippedCards[1].css('color', 'rgb(204,204,204)');
+      flippedCards[0].data('disable', true);
+      flippedCards[1].data('disable', true);
 
 
     }else {
